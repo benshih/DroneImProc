@@ -27,9 +27,6 @@ imgB = cat(3, zeroMat, zeroMat, orig(:,:,3));
 figure, imagesc(orig(:,:,3))
 
 
-% threshold or use ren's line finding to separate sky and building (since
-% not all of the key seems to be below the threshold between the sky and
-% building.
 
 
 
@@ -42,6 +39,38 @@ threshold = 40; % [percent]
 img = im2bw(img, threshold/100);
 
 thresd = img;
+
+
+%%
+
+% Convert image from logical do double.
+img = +img;
+
+vert = zeros(95,8);
+for n = 0:5
+    vert(16*n+1:16*(n+1),n+1)=-1;
+    vert(16*n+1:16*(n+1),n+3)=1;
+end
+vert=fliplr(vert);
+%figure; imagesc(vert);
+%
+edges=abs(conv2(orig(:,:,3),vert,'same'));
+% figure; imagesc(abs(edges));
+
+% Highlight discovered edges
+
+%figure; hist(edges(:),50);
+[y,x] = find(edges>7);
+figure; imagesc(edges); hold on;
+plot(x,y,'r.'); hold off;
+
+
+
+% threshold or use ren's line finding to separate sky and building (since
+% not all of the key seems to be below the threshold between the sky and
+% building.
+
+
 
 %% Blur the image using a Gaussian filter.
 % h = fspecial('gaussian', 10, 10);
