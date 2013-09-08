@@ -7,7 +7,7 @@ close all
 clear all
 
 % name of the input file using relative paths
-imname = 'tree1.jpg';
+imname = 'tree2.jpg';
 
 % read in the image
 fullim = imread(imname);
@@ -72,7 +72,14 @@ end
 
 img = imgMasked;
 
+
+% q: is it possible to do peak detection on a histogram in matlab? we
+% assume that the building is the relatively constant/consistent pixel
+% value, which means that in the histogram, it will have a sharper peak
+% (currently found on the right side of the hist). 
+figure, imhist(orig(:,:,1))
 figure, imhist(orig(:,:,2))
+figure, imhist(orig(:,:,3))
 
 % goal: use reshape to restructure the images into an easily iteratable
 % form, then use a conditional to either throw out the original pixel if it
