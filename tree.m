@@ -189,3 +189,35 @@ toc;
 % % img = imsubtract(imadd(img, imtophat(img, se)), imbothat(img, se));
 % 
 
+%% Tree Analysis (Rentaro)
+% Look at the peaks in the image histograms in each color and analyze to
+% see if the peaks belong to the same object in the image. 
+
+imR = orig(:,:,1);
+imG = orig(:,:,2);
+imB = orig(:,:,3);
+
+figure;
+subplot(1,3,1); hist(imR(:),50); title('Red');
+subplot(1,3,2); hist(imG(:),50); title('Green');
+subplot(1,3,3); hist(imB(:),50); title('Blue');
+
+% Manually Inspected Peak Values
+redPeak = .408;
+greenPeak = .388;
+bluePeak = .142;
+rangeL=0.95;
+rangeH=1.05;
+figure;
+subplot(1,3,1); imagesc(imR); title('Red'); hold on;
+[y1,x1] = find((rangeL*redPeak<imR)&(imR<rangeH*redPeak));
+plot(x1,y1,'k.'); hold off;
+subplot(1,3,2); imagesc(imG); title('Green'); hold on;
+[y2,x2] = find((rangeL*greenPeak<imG)&(imG<rangeH*greenPeak));
+plot(x2,y2,'k.'); hold off;
+subplot(1,3,3); imagesc(imB); title('Blue'); hold on;
+[y3,x3] = find((rangeL*bluePeak<imB)&(imB<rangeH*bluePeak));
+plot(x3,y3,'k.'); hold off;
+
+
+
