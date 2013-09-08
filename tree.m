@@ -196,6 +196,13 @@ toc;
 imR = orig(:,:,1);
 imG = orig(:,:,2);
 imB = orig(:,:,3);
+[imwidth imheight] = size(imG);
+
+imR = imR(1:floor(imwidth/4),1:floor(imheight/4));
+imG = imG(1:floor(imwidth/4),1:floor(imheight/4));
+imB = imB(1:floor(imwidth/4),1:floor(imheight/4));
+
+imMag = imdilate(sqrt(imR.^2+imG.^2+imB.^2),se);
 
 figure;
 subplot(1,3,1); hist(imR(:),50); title('Red');
@@ -219,5 +226,20 @@ subplot(1,3,3); imagesc(imB); title('Blue'); hold on;
 [y3,x3] = find((rangeL*bluePeak<imB)&(imB<rangeH*bluePeak));
 plot(x3,y3,'k.'); hold off;
 
+%%
+figure; plot3(imR(:), imG(:), imB(:),'.');
+xlabel('Red'); ylabel('Green'); zlabel('Blue');
+grid on;
 
-
+figure; subplot(121); imagesc(imMag);
+[y1,x1] = find((.817<imMag)&(imMag<1.11));
+[y2,x2] = find((.203<imMag)&(imMag<.216));
+[y3,x3] = find((1.17<imMag)&(imMag<1.19));
+hold on; 
+plot(x1,y1,'k.');
+% plot(x2,y2,'g.');
+% plot(x3,y3,'b.');
+hold off;
+subplot(122); hist(imMag(:),1000);
+[num, bins] = hist(imMag(:),1000);
+figure; plot(diff(num));
