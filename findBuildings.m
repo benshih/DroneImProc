@@ -12,8 +12,15 @@ se = strel('square', 4);
 imD = imdilate(img, se);
 imE = imerode(img, se);
 imEdge = imD-imE;
-figure; imagesc(imEdge); title('Result of Morphological Filter');
+figure(1); imagesc(imEdge); title('Result of Morphological Filter');
 
 %% Analyze edges
 figure; hist(double(imEdge(:)),100); 
 title('Histogram of Filter Output Intensity');
+
+[y,x] = find(imEdge==max(imEdge(:)));
+figure(1);
+hold on; plot(x,y,'k.'); hold off;
+
+%% Traverse Along Minimum Gradient
+
