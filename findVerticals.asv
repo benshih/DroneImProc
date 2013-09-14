@@ -4,10 +4,9 @@ close all;
 clear all;
 path = mfilename('fullpath');
 addpath([path(1:end-length('findVeritcals')) 'img1']);
-%%
 img = imread('purnell1.jpg');
 img = rgb2gray(img);
-
+%%
 se = strel('square', 4);
 imD = imdilate(img, se);
 imE = imerode(img, se);
