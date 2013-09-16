@@ -17,7 +17,7 @@ figure;
 imshow(scene);
 title('picture of scene');
 
-% DEtect feature points in both images.
+% Detect feature points in both images.
 objPoints = detectSURFFeatures(obj(:,:,1));
 scenePoints = detectSURFFeatures(scene(:,:,1));
 
