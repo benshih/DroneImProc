@@ -44,24 +44,32 @@ set(findall(gcf,'type','text'),'fontSize',16,'fontWeight','bold')
 %% Average pixel value
 mu = mean(video,4);
 figure, imshow(mu/255);
+%% Moving Average
+
+try
+    close figure 3
+catch me
+end
+figure(3);
+mu=0;
+for k = 1:nFrames
+    mu = mu+video(:,:,:,k)/32;
+    if(k>32)
+        mu = mu-video(:,:,:,k-32)/32;
+    end
+    figure(3); imshow(mu);
+end
+
+%% Thresholding
 % 
 % figure(3);
 % for k = 32:nFrames
 %     clip = video(:,:,:,k-31:k);
 %     mu = mean(clip,4);
-%     figure(3); imshow(mu/255);
+%     sigma = sqrt(var(double(clip),0,4));
+%     maskR = abs(double(video(:,:,1,k))-mu(:,:,1))>1*sigma(:,:,1);
+%     maskG = abs(double(video(:,:,2,k))-mu(:,:,2))>1*sigma(:,:,2);
+%     maskB = abs(double(video(:,:,3,k))-mu(:,:,3))>1*sigma(:,:,3);
+%     mask = maskR & maskB & maskG;
+%     figure(3); imshow(double(mask).*double(video(:,:,1,k)));
 % end
-
-%% Thresholding
-
-figure(3);
-for k = 32:nFrames
-    clip = video(:,:,:,k-31:k);
-    mu = mean(clip,4);
-    sigma = sqrt(var(double(clip),0,4));
-    maskR = abs(double(video(:,:,1,k))-mu(:,:,1))>1*sigma(:,:,1);
-    maskG = abs(double(video(:,:,2,k))-mu(:,:,2))>1*sigma(:,:,2);
-    maskB = abs(double(video(:,:,3,k))-mu(:,:,3))>1*sigma(:,:,3);
-    mask = maskR & maskB & maskG;
-    figure(3); imshow(double(mask).*double(video(:,:,1,k)));
-end
