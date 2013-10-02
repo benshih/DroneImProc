@@ -44,21 +44,24 @@ set(findall(gcf,'type','text'),'fontSize',16,'fontWeight','bold')
 %% Average pixel value
 mu = mean(video,4);
 figure, imshow(mu/255);
-
-figure(3);
-for k = 32:nFrames
-    clip = video(:,:,:,k-31:k);
-    mu = mean(clip,4);
-    figure(3); imshow(mu/255);
-end
-
-%% Thresholding
 % 
 % figure(3);
 % for k = 32:nFrames
 %     clip = video(:,:,:,k-31:k);
 %     mu = mean(clip,4);
-%     sigma = sqrt(var(double(clip),0,4));
-%     mask = abs(double(video(:,:,:,k))-mu)>3*sigma;
-%     figure(3); imshow(double(mask).*double(video(:,:,:,k)));;
+%     figure(3); imshow(mu/255);
 % end
+
+%% Thresholding
+
+figure(3);
+for k = 32:nFrames
+    clip = video(:,:,:,k-31:k);
+    mu = mean(clip,4);
+    sigma = sqrt(var(double(clip),0,4));
+    maskR = abs(double(video(:,:,1,k))-mu(:,:,1))>1*sigma(:,:,1);
+    maskG = abs(double(video(:,:,2,k))-mu(:,:,2))>1*sigma(:,:,2);
+    maskB = abs(double(video(:,:,3,k))-mu(:,:,3))>1*sigma(:,:,3);
+    mask = maskR & maskB & maskG;
+    figure(3); imshow(double(mask).*double(video(:,:,1,k)));
+end
