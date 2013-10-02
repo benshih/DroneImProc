@@ -47,9 +47,18 @@ figure, imshow(mu/255);
 
 figure(3);
 for k = 32:nFrames
-    % take a portion of the video
-    %mov(k).cdata = video(ceil(vidHeight/4):ceil(3/4*vidHeight),ceil(vidWidth/4):ceil(3/4*vidWidth),:,k);
     clip = video(:,:,:,k-31:k);
     mu = mean(clip,4);
     figure(3); imshow(mu/255);
 end
+
+%% Thresholding
+% 
+% figure(3);
+% for k = 32:nFrames
+%     clip = video(:,:,:,k-31:k);
+%     mu = mean(clip,4);
+%     sigma = sqrt(var(double(clip),0,4));
+%     mask = abs(double(video(:,:,:,k))-mu)>3*sigma;
+%     figure(3); imshow(double(mask).*double(video(:,:,:,k)));;
+% end
