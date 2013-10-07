@@ -47,17 +47,17 @@ figure, imshow(mu/255);
 %% Moving Average
 
 try
-    close figure 3
+    close figure 100
 catch me
 end
-figure(3);
+figure(100);
 mu=0;
 for k = 1:nFrames
     mu = mu+video(:,:,:,k)/32;
     if(k>32)
         mu = mu-video(:,:,:,k-32)/32;
     end
-    figure(3); imshow(mu);
+    figure(100); imshow(mu);
 end
 
 %% Thresholding
