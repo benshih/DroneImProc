@@ -7,7 +7,7 @@ close all
 
 %% Load Video
 
-filename = 'kittenslide_clip.mp4';
+filename = 'gates1.MOV';
 obj = VideoReader(filename);
 nFrames = obj.NumberOfFrames;
 vidHeight = obj.Height;
@@ -27,7 +27,7 @@ end
 %% Inspecting individual pixels
 
 A = squeeze(video(100,100,:,:));
-B = squeeze(video(100,200,:,:));
+B = squeeze(video(100,200,:,:)); 
 C = squeeze(video(250,200,:,:));
 
 figure;
@@ -52,12 +52,19 @@ catch me
 end
 figure(100);
 mu=0;
-for k = 1:nFrames
-    mu = mu+video(:,:,:,k)/32;
-    if(k>32)
-        mu = mu-video(:,:,:,k-32)/32;
-    end
-    figure(100); imshow(mu);
+% for k = 1:nFrames
+%     mu = mu+video(:,:,:,k)/32;
+%     if(k>32)
+%         mu = mu-video(:,:,:,k-32)/32;
+%     end
+%     figure(100); imshow(mu);
+%     
+%     
+% end
+figure;
+
+for kFrame = 2:nFrames
+    
 end
 
 %% Thresholding
