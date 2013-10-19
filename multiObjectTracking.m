@@ -32,7 +32,7 @@ function multiObjectTracking()
             % objects in each frame, and playing the video.
 
             % Create a video file reader.
-            obj.reader = vision.VideoFileReader('kittenslide.mp4');
+            obj.reader = vision.VideoFileReader('P1030324.MOV');
 
             % Create two video players, one to display the video,
             % and one to display the foreground mask.
@@ -46,8 +46,8 @@ function multiObjectTracking()
             % of 1 corresponds to the foreground and the value of 0 corresponds
             % to the background.
 
-            obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
-                'NumTrainingFrames', 40, 'MinimumBackgroundRatio', 0.7);
+            obj.detector = vision.ForegroundDetector('NumGaussians', 2, ...
+                'NumTrainingFrames', 32, 'MinimumBackgroundRatio', 0.7);
 
             % Connected groups of foreground pixels are likely to correspond to moving
             % objects.  The blob analysis system object is used to find such groups
