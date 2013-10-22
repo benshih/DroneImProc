@@ -55,11 +55,11 @@ end
 figure(101); %set(100,'Position',[vidWidth+100 0 vidWidth vidHeight]);
 mu=0;
 for k = 1:nFrames
-    mu = mu+video(:,:,:,k)/32;
-    if(k>32)
-        mu = mu-video(:,:,:,k-32)/32;
+    mu = mu+video(:,:,:,k)/64;
+    if(k>64)
+        mu = mu-video(:,:,:,k-32)/64;
     end
-    mask = abs(mu - video(:,:,:,k))>15;
+    mask = abs(mu - video(:,:,:,k))>35;
     mask = mask(:,:,1)&mask(:,:,2)&mask(:,:,3);
     
 %     figure(100); imshow(mu);
