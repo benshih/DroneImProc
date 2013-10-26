@@ -20,7 +20,7 @@ for k = 1:nFrames
     % take a portion of the video
     %mov(k).cdata = video(ceil(vidHeight/4):ceil(3/4*vidHeight),ceil(vidWidth/4):ceil(3/4*vidWidth),:,k);
     mov(k).cdata = video(:,:,:,k);
-
+    
     mov(k).colormap = [];
 end
 
@@ -29,15 +29,15 @@ end
 % A = squeeze(video(100,100,:,:));
 % B = squeeze(video(100,200,:,:));
 % C = squeeze(video(250,200,:,:));
-% 
+%
 % figure;
 % subplot(2,2,1); imshow(video(:,:,:,1));
 % hold on; plot([100 100 250],[100 200 200],'ro'); hold off;
-% subplot(2,2,2); plot(1:nFrames,A); title('Pixel at (100,100)'); 
+% subplot(2,2,2); plot(1:nFrames,A); title('Pixel at (100,100)');
 % xlabel('frame'); ylabel('intensity');
-% subplot(2,2,3); plot(1:nFrames,B); title('Pixel at (100,200)'); 
+% subplot(2,2,3); plot(1:nFrames,B); title('Pixel at (100,200)');
 % xlabel('frame'); ylabel('intensity');
-% subplot(2,2,4); plot(1:nFrames,C); title('Pixel at (250,200)'); 
+% subplot(2,2,4); plot(1:nFrames,C); title('Pixel at (250,200)');
 % xlabel('frame'); ylabel('intensity');
 % set(findall(gcf,'type','text'),'fontSize',16,'fontWeight','bold')
 
@@ -45,29 +45,39 @@ end
 % mu = mean(video,4);
 % figure, imshow(mu/255);
 %% Moving Average
-
+dur = 128;
 try
-%     close figure 100
+    %     close figure 100
     close figure 101
 catch me
 end
 % figure(100); set(100,'Position',[0 0 vidWidth vidHeight]);
 figure(101); %set(100,'Position',[vidWidth+100 0 vidWidth vidHeight]);
 mu=0;
+sum=0;
+gig=0;
 for k = 1:nFrames
-    mu = mu+video(:,:,:,k)/64;
-    if(k>64)
-        mu = mu-video(:,:,:,k-32)/64;
+    mu = mu+video(:,:,:,k)/dur;
+    if(k>dur)
+        mu = mu-video(:,:,:,k-dur)/dur;
+        delta=0;
+        for n=k-dur:k
+            delta = video(:,:,:,n)-mu;
+            sum = sum + (delta).^2;
+        end
+        sig = sqrt(double(sum)/(dur-1));
+        mask = abs(delta)>sig;
+        mask = mask(:,:,1)&mask(:,:,2)&mask(:,:,3);
+        figure(101); imshow(double(mask));
     end
-    mask = abs(mu - video(:,:,:,k))>35;
-    mask = mask(:,:,1)&mask(:,:,2)&mask(:,:,3);
     
-%     figure(100); imshow(mu);
-    figure(101); imshow(double(mask));
+    
+    %     figure(100); imshow(mu);
+    
 end
 
 %% Thresholding
-% 
+%
 % figure(3);
 % for k = 32:nFrames
 %     clip = video(:,:,:,k-31:k);
