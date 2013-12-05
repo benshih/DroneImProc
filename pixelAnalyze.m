@@ -16,9 +16,9 @@ video = read(obj);
 x = [600 200 400];
 y = [150 400 300];
 name = cell(1,3);
-name{1} = 'tree in sun';
-name{2} = 'road in sun';
-name{3} = 'walking in shade';
+name{1} = 'tree';
+name{2} = 'road';
+name{3} = 'walking';
 
 frame = squeeze(video(:,:,:,200));
 figure, imshow(frame); hold on;
@@ -29,14 +29,10 @@ for i=1:length(x)
     subplot(121);
     plot(160:nFrames,squeeze(video(y(i),x(i),:,160:end))); xlim([150 810]);
     title(['Pixel Intensity: ' name{i}]); xlabel('frame');
-    setFontSize(18);
+    setFontSize(16);
     subplot(122);
     hist(squeeze(video(y(i),x(i),1,160:end)),0:255);
     title('Red Pixel Histogram'); xlabel('intensity');
-    setFontSize(18);
+    setFontSize(16);
+    print(h,'-dpng',[name{i} '.png']);
 end
-%%
-
-plot([1:10])
-
-xlhand = 
