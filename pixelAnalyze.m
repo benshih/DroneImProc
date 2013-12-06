@@ -16,8 +16,8 @@ video = read(obj);
 x = [600 200 400];
 y = [150 400 300];
 name = cell(1,3);
-name{1} = 'tree';
-name{2} = 'road';
+name{1} = 'road';
+name{2} = 'tree';
 name{3} = 'walking';
 
 frame = squeeze(video(:,:,:,200));
@@ -36,3 +36,23 @@ for i=1:length(x)
     setFontSize(16);
     print(h,'-dpng',[name{i} '.png']);
 end
+
+%%
+dur = 128;
+start = 250;
+mu=zeros(1,nFrames);
+sig=zeros(1,nFrames);
+for k=start:nFrames
+    ped = squeeze(video(300,400,1,k-dur:k-1));
+    mu(k) = mean(ped);
+    sig(k) = sqrt(var(double(ped)));
+end
+
+figure, plot(squeeze(video(300,400,1,:))); hold on;
+plot(mu,'r');
+plot(mu+2*sig,'g');
+plot(mu-2*sig,'g');
+hold off;xlim([start nFrames])
+xlabel('frame'); ylabel('intensity'); title('Pixel Intensity with Pedestrian');
+ylim([0 255])
+legend('Intensity','MA(128)','\mu+/-2\sigma');setFontSize(16);
