@@ -32,7 +32,7 @@ function multiObjectTracking()
             % objects in each frame, and playing the video.
 
             % Create a video file reader.
-            obj.reader = vision.VideoFileReader('P1030325.MOV');
+            obj.reader = vision.VideoFileReader('StabilizedVideo.mov');
 
             % Create two video players, one to display the video,
             % and one to display the foreground mask.
@@ -118,7 +118,7 @@ function multiObjectTracking()
         end
 
         % Solve the assignment problem.
-        costOfNonAssignment = 20;
+        costOfNonAssignment = 25;
         [assignments, unassignedTracks, unassignedDetections] = ...
             assignDetectionsToTracks(cost, costOfNonAssignment);
     end
@@ -243,11 +243,11 @@ function multiObjectTracking()
                 % which we display the predicted rather than the actual
                 % location.
                 labels = cellstr(int2str(ids'));
-                predictedTrackInds = ...
-                    [reliableTracks(:).consecutiveInvisibleCount] > 0;
-                isPredicted = cell(size(labels));
-                isPredicted(predictedTrackInds) = {' predicted'};
-                labels = strcat(labels, isPredicted);
+%                 predictedTrackInds = ...
+%                     [reliableTracks(:).consecutiveInvisibleCount] > 0;
+%                 isPredicted = cell(size(labels));
+%                 isPredicted(predictedTrackInds) = {' predicted'};
+%                 labels = strcat(labels, isPredicted);
 
                 % Draw the objects on the frame.
                 frame = insertObjectAnnotation(frame, 'rectangle', ...
