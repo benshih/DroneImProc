@@ -5,26 +5,27 @@ close all
 
 fname1 = 'gymKidSplice.mp4';
 obj = VideoReader(fname1);
-nFrames = min(obj.NumberOfFrames,objR.NumberOfFrames);
+nFrames = min(obj.NumberOfFrames,obj.NumberOfFrames);
 vidHeight = obj.Height;
 vidWidth = obj.Width;
 
 %% Read Video Object
-% frames = 90*30:105*30;
 
 for k=1:nFrames
-    frame = read(obj,k);
-    mov(k).cdata = [frame frameR];
+    % Make sure to use the right constant
+    frame = lensdistort(read(obj,k),-.18);
+
+    mov(k).cdata = frame;
     mov(k).colormap = [];
     k
 end
 
-% %% Play Video
+%% Play Video
 % h = figure;
 % movie(h,mov,1,objL.FrameRate);
 
 %%
 
-writeMP4_ren('gymKidSpliceUnwarped',mov);
+writeMP4_ren('gymKidUnwarped',mov);
 
 
