@@ -10,7 +10,7 @@ plotMatches(img1, img2, pts);
 % plotMatches(im2double(taj1r), im2double(taj2r), tajPts) to see the
 % corresponding points between the two taj images.
 
-% panorama(im2double(taj1r), im2double(taj2r), tajPts) to generate the full
+ panorama(im2double(img1), im2double(img2), tajPts)% to generate the full
 % panoramic image (uncut). 
 
 % right now we are looking just at the video(:,:,:,1) and video(:,:,:,2)
