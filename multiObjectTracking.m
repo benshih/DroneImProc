@@ -8,6 +8,9 @@ function multiObjectTracking()
 
     nextId = 1; % ID of the next track
 
+    write = vision.VideoFileWriter('/Users/benshih/Desktop/BenProjectsActive/DroneImProc/ARDroneVideos/gymKid_splice4_trackBlue2.avi');
+
+    
     % Detect moving objects, and track them across video frames.
     while ~isDone(obj.reader)
         frame = readFrame();
@@ -21,7 +24,7 @@ function multiObjectTracking()
         deleteLostTracks();
         createNewTracks();
 
-        displayTrackingResults();
+        displayTrackingResults(write);
     end
 
 
@@ -32,7 +35,7 @@ function multiObjectTracking()
             % objects in each frame, and playing the video.
 
             % Create a video file reader.
-            obj.reader = vision.VideoFileReader('StabilizedVideo.mov');
+            obj.reader = vision.VideoFileReader('/Users/benshih/Desktop/BenProjectsActive/DroneImProc/ARDroneVideos/gymKid_splice4_stableBlue.avi');
 
             % Create two video players, one to display the video,
             % and one to display the foreground mask.
@@ -46,8 +49,8 @@ function multiObjectTracking()
             % of 1 corresponds to the foreground and the value of 0 corresponds
             % to the background.
 
-            obj.detector = vision.ForegroundDetector('NumGaussians', 2, ...
-                'NumTrainingFrames', 32, 'MinimumBackgroundRatio', 0.7);
+            obj.detector = vision.ForegroundDetector('NumGaussians', 3, ...
+                'NumTrainingFrames', 64, 'MinimumBackgroundRatio', 0.73);
 
             % Connected groups of foreground pixels are likely to correspond to moving
             % objects.  The blob analysis system object is used to find such groups
@@ -56,7 +59,7 @@ function multiObjectTracking()
 
             obj.blobAnalyser = vision.BlobAnalysis('BoundingBoxOutputPort', true, ...
                 'AreaOutputPort', true, 'CentroidOutputPort', true, ...
-                'MinimumBlobArea', 400);
+                'MinimumBlobArea', 700, 'MaximumBlobArea', 4000, 'ExcludeBorderBlobs', true);
     end
 
 
@@ -81,12 +84,30 @@ function multiObjectTracking()
         mask = obj.detector.step(frame);
 
         % Apply morphological operations to remove noise and fill in holes.
-        mask = imopen(mask, strel('rectangle', [3,3]));
-        mask = imclose(mask, strel('rectangle', [15, 15]));
+        mask = imopen(mask, strel('rectangle', [5,5]));
+        mask = imclose(mask, strel('rectangle', [19, 19]));
         mask = imfill(mask, 'holes');
 
         % Perform blob analysis to find connected components.
         [~, centroids, bboxes] = obj.blobAnalyser.step(mask);
+        
+        [m,n] = size(bboxes);
+        for i = 1:m
+            if (bboxes(:,3) < 25 | bboxes(:,4) < 25 | bboxes(:,3) > 60 | bboxes(:,4) > 60)
+                bboxes(:,3) = 0;
+                bboxes(:,4) = 0;
+            end
+        end
+        
+        %         % Find the indices of unwanted blobs due to box height/width being too skinny.
+%         lostInds = bboxes(:,3) < 25 | bboxes(:,4) < 25 | bboxes(:,3) > 60 | bboxes(:,4) > 60
+% 
+%         % Delete lost tracks.
+%         centroids = centroids(~lostInds);
+%         bboxes = bboxes(~lostInds);
+%         ...
+
+        1
     end
 
 
@@ -166,8 +187,8 @@ function multiObjectTracking()
             return;
         end
 
-        invisibleForTooLong = 10;
-        ageThreshold = 8;
+        invisibleForTooLong = 30;
+        ageThreshold = 10;
 
         % Compute the fraction of the track's age for which it was visible.
         ages = [tracks(:).age];
@@ -175,7 +196,7 @@ function multiObjectTracking()
         visibility = totalVisibleCounts ./ ages;
 
         % Find the indices of 'lost' tracks.
-        lostInds = (ages < ageThreshold & visibility < 0.6) | ...
+        lostInds = (ages < ageThreshold & visibility < 0.8) | ...
             [tracks(:).consecutiveInvisibleCount] >= invisibleForTooLong;
 
         % Delete lost tracks.
@@ -194,8 +215,8 @@ function multiObjectTracking()
             bbox = bboxes(i, :);
 
             % Create a Kalman filter object.
-            kalmanFilter = configureKalmanFilter('ConstantVelocity', ...
-                centroid, [200, 50], [100, 25], 100);
+            kalmanFilter = configureKalmanFilter('ConstantAcceleration', ...
+                centroid, [200, 50, 10], [100, 25, 5], 100);
 
             % Create a new track.
             newTrack = struct(...
@@ -215,12 +236,14 @@ function multiObjectTracking()
   end
 
 
-   function displayTrackingResults()
+   function displayTrackingResults(write)
+      
+                
         % Convert the frame and the mask to uint8 RGB.
         frame = im2uint8(frame);
         mask = uint8(repmat(mask, [1, 1, 3])) .* 255;
 
-        minVisibleCount = 8;
+        minVisibleCount = 15;
         if ~isempty(tracks)
 
             % Noisy detections tend to result in short-lived tracks.
@@ -262,5 +285,6 @@ function multiObjectTracking()
         % Display the mask and the frame.
         obj.maskPlayer.step(mask);
         obj.videoPlayer.step(frame);
+        write.step(frame);
    end
 end

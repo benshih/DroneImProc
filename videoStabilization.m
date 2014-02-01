@@ -1,7 +1,7 @@
 % http://www.mathworks.com/help/vision/examples/video-stabilization.html
 
 % Input video file which needs to be stabilized.
-filename = 'P1030324.MOV';
+filename = '/Users/benshih/Desktop/BenProjectsActive/DroneImProc/ARDroneVideos/gymKid_splice2.m4v';
 
 hVideoSource = vision.VideoFileReader(filename, ...
                                       'ImageColorSpace', 'Intensity',...
@@ -14,7 +14,7 @@ hTranslate = vision.GeometricTranslator( ...
 hTM = vision.TemplateMatcher('ROIInputPort', true, ...
                             'BestMatchNeighborhoodOutputPort', true);
                         
-videoFWriter = vision.VideoFileWriter('stablilizeOutput.mov');
+videoFWriter = vision.VideoFileWriter('/Users/benshih/Desktop/BenProjectsActive/DroneImProc/ARDroneVideos/gymKid_stable.m4v');
                         
                         
 hVideoOut = vision.VideoPlayer('Name', 'Video Stabilization');
@@ -22,9 +22,9 @@ hVideoOut.Position(1) = round(0.4*hVideoOut.Position(1));
 hVideoOut.Position(2) = round(1.5*(hVideoOut.Position(2)));
 hVideoOut.Position(3:4) = [650 350];
 
-pos.template_orig = [300 150]; % [x y] upper left corner
-pos.template_size = [22 18];   % [width height]
-pos.search_border = [15 10];   % max horizontal and vertical displacement
+pos.template_orig = [325 175]; % [x y] upper left corner
+pos.template_size = [50 50];   % [width height]
+pos.search_border = [40 40];   % max horizontal and vertical displacement
 pos.template_center = floor((pos.template_size-1)/2);
 pos.template_center_pos = (pos.template_orig + pos.template_center - 1);
 fileInfo = info(hVideoSource);
