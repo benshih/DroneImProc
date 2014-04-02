@@ -1,3 +1,6 @@
+// mosaicking.js
+// Starts a png server that serves most recently captured image from ar.drone. Then ar.drone is controlled by a predetermined set of commands.
+
 var arDrone = require('ar-drone');
 var http    = require('http');
 
