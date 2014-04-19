@@ -31,8 +31,9 @@ int main(int argc, char* argv[])
     }
     
     imwrite(result_name, pano); // write the result to the output image
-    imshow(result_name, pano);
-    
+    //imshow(result_name, pano);
+    cout << "Result saved as: " << result_name << endl;
+
     waitKey(0);
     return 0;
 }
