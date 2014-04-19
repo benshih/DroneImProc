@@ -20,12 +20,12 @@ void readme();
 
 int main(int argc, char** argv)
 {
-/*    if(1 != argc)
+    if(argc !=2)
     {
         readme();
         return -1;
     }
-
+/*
     //int numImages = system(ls images|wc -l);
    
     Mat finalImage;
@@ -52,8 +52,8 @@ int main(int argc, char** argv)
     cvtColor(image1, gray_image1, CV_RGB2GRAY);
     cvtColor(image2, gray_image2, CV_RGB2GRAY);
     
-    imshow("image1", image1);
-    imshow("image2", image2);
+    //imshow("image1", image1);
+    //imshow("image2", image2);
 
     if(!gray_image1.data || !gray_image2.data)
     {
