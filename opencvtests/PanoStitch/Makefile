@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = "/Applications/CMake 2.8-12.app/Contents/bin/ccmake"
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/benshih/Desktop/BenProjectsActive/DroneImProc/opencvtests/PanoStitch
+CMAKE_SOURCE_DIR = /Users/rmatsuka/DroneImProc/opencvtests/PanoStitch
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/benshih/Desktop/BenProjectsActive/DroneImProc/opencvtests/PanoStitch
+CMAKE_BINARY_DIR = /Users/rmatsuka/DroneImProc/opencvtests/PanoStitch
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -72,9 +72,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/benshih/Desktop/BenProjectsActive/DroneImProc/opencvtests/PanoStitch/CMakeFiles /Users/benshih/Desktop/BenProjectsActive/DroneImProc/opencvtests/PanoStitch/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/rmatsuka/DroneImProc/opencvtests/PanoStitch/CMakeFiles /Users/rmatsuka/DroneImProc/opencvtests/PanoStitch/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/benshih/Desktop/BenProjectsActive/DroneImProc/opencvtests/PanoStitch/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/rmatsuka/DroneImProc/opencvtests/PanoStitch/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
